@@ -1,19 +1,19 @@
-import { z } from 'zod';
-import { type ZodRouter } from 'koa-zod-router';
-import { getWarehouseStorage } from './memory-adapter';
+import { z } from "zod";
+import { type ZodRouter } from "koa-zod-router";
+import { getWarehouseStorage } from "./memory-adapter";
 
 export function registerWarehouseRoutes(router: ZodRouter): void {
   // Place books on shelf
   router.register({
-    name: 'place books on shelf',
-    method: 'post',
-    path: '/warehouse/shelves',
+    name: "place books on shelf",
+    method: "post",
+    path: "/warehouse/shelves",
     validate: {
       body: z.object({
         bookId: z.string(),
         numberOfBooks: z.number().int().positive(),
-        shelf: z.string()
-      })
+        shelf: z.string(),
+      }),
     },
     handler: async (ctx, next) => {
       const { bookId, numberOfBooks, shelf } = ctx.request.body;
@@ -29,18 +29,18 @@ export function registerWarehouseRoutes(router: ZodRouter): void {
       }
 
       await next();
-    }
+    },
   });
 
   // Find book locations
   router.register({
-    name: 'find book on shelf',
-    method: 'get',
-    path: '/warehouse/books/:bookId/locations',
+    name: "find book on shelf",
+    method: "get",
+    path: "/warehouse/books/:bookId/locations",
     validate: {
       params: z.object({
-        bookId: z.string()
-      })
+        bookId: z.string(),
+      }),
     },
     handler: async (ctx, next) => {
       const { bookId } = ctx.request.params;
@@ -50,18 +50,18 @@ export function registerWarehouseRoutes(router: ZodRouter): void {
       ctx.body = locations;
 
       await next();
-    }
+    },
   });
 
   // Get total stock for a book
   router.register({
-    name: 'get book stock',
-    method: 'get',
-    path: '/warehouse/books/:bookId/stock',
+    name: "get book stock",
+    method: "get",
+    path: "/warehouse/books/:bookId/stock",
     validate: {
       params: z.object({
-        bookId: z.string()
-      })
+        bookId: z.string(),
+      }),
     },
     handler: async (ctx, next) => {
       const { bookId } = ctx.request.params;
@@ -71,6 +71,6 @@ export function registerWarehouseRoutes(router: ZodRouter): void {
       ctx.body = { bookId, stock };
 
       await next();
-    }
+    },
   });
 }

@@ -1,8 +1,13 @@
-import { type OrdersStorage, type BookID, type OrderId, type Order } from './types';
-import { randomBytes } from 'crypto';
+import {
+  type OrdersStorage,
+  type BookID,
+  type OrderId,
+  type Order,
+} from "./types";
+import { randomBytes } from "crypto";
 
 function generateOrderId(): string {
-  return randomBytes(12).toString('hex');
+  return randomBytes(12).toString("hex");
 }
 
 export class InMemoryOrdersStorage implements OrdersStorage {
@@ -10,7 +15,7 @@ export class InMemoryOrdersStorage implements OrdersStorage {
 
   async createOrder(books: BookID[]): Promise<{ orderId: OrderId }> {
     if (books.length === 0) {
-      throw new Error('Order must contain at least one book');
+      throw new Error("Order must contain at least one book");
     }
 
     const orderId = generateOrderId();
@@ -25,7 +30,7 @@ export class InMemoryOrdersStorage implements OrdersStorage {
       orderId,
       books: bookCounts,
       fulfilled: false,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     this.orders.set(orderId, order);
@@ -41,22 +46,24 @@ export class InMemoryOrdersStorage implements OrdersStorage {
     const allOrders = Array.from(this.orders.values());
 
     if (fulfilled === undefined) {
-      return allOrders.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+      return allOrders.sort(
+        (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+      );
     }
 
     return allOrders
-      .filter(order => order.fulfilled === fulfilled)
+      .filter((order) => order.fulfilled === fulfilled)
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   }
 
   async fulfillOrder(orderId: OrderId): Promise<void> {
     const order = this.orders.get(orderId);
     if (!order) {
-      throw new Error('Order not found');
+      throw new Error("Order not found");
     }
 
     if (order.fulfilled) {
-      throw new Error('Order already fulfilled');
+      throw new Error("Order already fulfilled");
     }
 
     order.fulfilled = true;

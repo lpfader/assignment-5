@@ -1,5 +1,5 @@
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import { beforeAll, afterAll } from 'vitest';
+import { MongoMemoryServer } from "mongodb-memory-server";
+import { beforeAll, afterAll } from "vitest";
 
 let mongoServer: MongoMemoryServer | null = null;
 
@@ -9,7 +9,10 @@ beforeAll(async () => {
 
   const uri = mongoServer.getUri();
   // Store the URI globally for tests to use
-  (global as Record<string, unknown>).MONGO_URI = uri.slice(0, uri.lastIndexOf('/'));
+  (global as Record<string, unknown>).MONGO_URI = uri.slice(
+    0,
+    uri.lastIndexOf("/"),
+  );
 }, 120000); // 2 minute timeout for setup
 
 afterAll(async () => {

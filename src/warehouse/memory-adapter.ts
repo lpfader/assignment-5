@@ -1,12 +1,21 @@
-import { type WarehouseStorage, type BookID, type ShelfId, type ShelfStock } from './types';
+import {
+  type WarehouseStorage,
+  type BookID,
+  type ShelfId,
+  type ShelfStock,
+} from "./types";
 
 export class InMemoryWarehouseStorage implements WarehouseStorage {
   // Map: bookId -> Map<shelfId, count>
   private storage: Map<BookID, Map<ShelfId, number>> = new Map();
 
-  async placeBooksOnShelf(bookId: BookID, numberOfBooks: number, shelf: ShelfId): Promise<void> {
+  async placeBooksOnShelf(
+    bookId: BookID,
+    numberOfBooks: number,
+    shelf: ShelfId,
+  ): Promise<void> {
     if (numberOfBooks <= 0) {
-      throw new Error('Number of books must be positive');
+      throw new Error("Number of books must be positive");
     }
 
     let bookShelves = this.storage.get(bookId);
@@ -49,19 +58,25 @@ export class InMemoryWarehouseStorage implements WarehouseStorage {
     return total;
   }
 
-  async removeBooksFromShelf(bookId: BookID, numberOfBooks: number, shelf: ShelfId): Promise<void> {
+  async removeBooksFromShelf(
+    bookId: BookID,
+    numberOfBooks: number,
+    shelf: ShelfId,
+  ): Promise<void> {
     if (numberOfBooks <= 0) {
-      throw new Error('Number of books must be positive');
+      throw new Error("Number of books must be positive");
     }
 
     const bookShelves = this.storage.get(bookId);
     if (!bookShelves) {
-      throw new Error('Book not found in warehouse');
+      throw new Error("Book not found in warehouse");
     }
 
     const currentCount = bookShelves.get(shelf) ?? 0;
     if (currentCount < numberOfBooks) {
-      throw new Error(`Not enough books on shelf. Available: ${currentCount}, requested: ${numberOfBooks}`);
+      throw new Error(
+        `Not enough books on shelf. Available: ${currentCount}, requested: ${numberOfBooks}`,
+      );
     }
 
     const newCount = currentCount - numberOfBooks;

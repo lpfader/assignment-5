@@ -1,9 +1,9 @@
-import { z } from 'zod';
-import { type ZodRouter } from 'koa-zod-router';
-import { getDatabase } from '../db';
-import { ObjectId, Db } from 'mongodb';
-import { getWarehouseStorage } from '../warehouse/memory-adapter';
-import type { WarehouseStorage } from '../warehouse/types';
+import { z } from "zod";
+import { type ZodRouter } from "koa-zod-router";
+import { getDatabase } from "../db";
+import { ObjectId, Db } from "mongodb";
+import { getWarehouseStorage } from "../warehouse/memory-adapter";
+import type { WarehouseStorage } from "../warehouse/types";
 
 export interface BookWithId {
   id: string;
@@ -27,11 +27,11 @@ interface BookDocument {
 export async function lookupBookById(
   bookId: string,
   db: Db,
-  warehouse?: WarehouseStorage
+  warehouse?: WarehouseStorage,
 ): Promise<BookWithId | null> {
   try {
     const objectId = ObjectId.createFromHexString(bookId);
-    const collection = db.collection<BookDocument>('books');
+    const collection = db.collection<BookDocument>("books");
     const document = await collection.findOne({ _id: objectId });
 
     if (!document) {
@@ -44,7 +44,7 @@ export async function lookupBookById(
       author: document.author,
       description: document.description,
       price: document.price,
-      image: document.image
+      image: document.image,
     };
 
     // Add stock if warehouse is provided
@@ -62,13 +62,13 @@ export async function lookupBookById(
 // Route wrapper
 export default function lookupBookByIdRoute(router: ZodRouter): void {
   router.register({
-    name: 'lookup book by id',
-    method: 'get',
-    path: '/books/:id',
+    name: "lookup book by id",
+    method: "get",
+    path: "/books/:id",
     validate: {
       params: z.object({
-        id: z.string()
-      })
+        id: z.string(),
+      }),
     },
     handler: async (ctx, next) => {
       const { id } = ctx.request.params;
@@ -80,10 +80,10 @@ export default function lookupBookByIdRoute(router: ZodRouter): void {
         ctx.body = book;
       } else {
         ctx.status = 404;
-        ctx.body = { error: 'Book not found' };
+        ctx.body = { error: "Book not found" };
       }
 
       await next();
-    }
+    },
   });
 }

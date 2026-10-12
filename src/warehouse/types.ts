@@ -9,7 +9,11 @@ export interface ShelfStock {
 // Port interface for warehouse storage
 export interface WarehouseStorage {
   // Place books on a shelf
-  placeBooksOnShelf(bookId: BookID, numberOfBooks: number, shelf: ShelfId): Promise<void>;
+  placeBooksOnShelf(
+    bookId: BookID,
+    numberOfBooks: number,
+    shelf: ShelfId,
+  ): Promise<void>;
 
   // Find where a book is located
   findBookOnShelf(bookId: BookID): Promise<ShelfStock[]>;
@@ -18,5 +22,9 @@ export interface WarehouseStorage {
   getTotalStock(bookId: BookID): Promise<number>;
 
   // Remove books from a shelf (for order fulfillment)
-  removeBooksFromShelf(bookId: BookID, numberOfBooks: number, shelf: ShelfId): Promise<void>;
+  removeBooksFromShelf(
+    bookId: BookID,
+    numberOfBooks: number,
+    shelf: ShelfId,
+  ): Promise<void>;
 }

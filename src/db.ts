@@ -1,9 +1,10 @@
-import { Db, MongoClient, Collection, Document } from 'mongodb';
+import { Db, MongoClient, Collection, Document } from "mongodb";
 
 // Use test URI if available, otherwise use environment variable or default
 function getMongoUri(): string {
-  const testUri = (global as Record<string, unknown>).MONGO_URI as string | undefined;
-  return testUri ?? process.env.MONGODB_URL ?? 'mongodb://localhost:27017';
+  const testUri = (global as Record<string, unknown>).MONGO_URI as
+    string | undefined;
+  return testUri ?? process.env.MONGODB_URL ?? "mongodb://localhost:27017";
 }
 
 function isTestEnvironment(): boolean {
@@ -23,9 +24,11 @@ export async function connectToDatabase(dbName?: string): Promise<Db> {
   await client.connect();
 
   // In test mode, use random database name for isolation if not specified
-  const databaseName = dbName ?? (isTestEnvironment()
-    ? `test_${Math.floor(Math.random() * 100000)}`
-    : 'mcmasterful-books');
+  const databaseName =
+    dbName ??
+    (isTestEnvironment()
+      ? `test_${Math.floor(Math.random() * 100000)}`
+      : "mcmasterful-books");
 
   database = client.db(databaseName);
   return database;
@@ -41,7 +44,7 @@ export async function disconnectFromDatabase(): Promise<void> {
 
 export function getDatabase(): Db {
   if (!database) {
-    throw new Error('Database not connected. Call connectToDatabase first.');
+    throw new Error("Database not connected. Call connectToDatabase first.");
   }
   return database;
 }
@@ -70,6 +73,6 @@ export async function createTestDatabase(): Promise<DatabaseAccessor> {
     close: async () => {
       await db.dropDatabase();
       await testClient.close();
-    }
+    },
   };
 }
