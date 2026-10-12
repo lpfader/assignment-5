@@ -1,14 +1,16 @@
 {
   "name": "assignment-template",
   "version": "1.0.0",
-  "description": "This is a template repository for the first assignment in BVD 103 at McMaster Continuing Education.",
+  "description": "This is an ongoing repository for BVD 103.",
   "main": "src/server.ts",
   "scripts": {
     "start-server": "tsx ./src/server.ts",
     "test": "vitest",
     "test:ci": "vitest run",
-    "lint": "eslint . --ext .ts",
-    "fix-lint": "eslint . --ext .ts --fix",
+    "lint": "eslint . --cache",
+    "fix-lint": "eslint . --fix --cache",
+    "fmt": "prettier --write .",
+    "fmt-check": "prettier --check .",
     "type-check": "tsc --noEmit"
   },
   "keywords": [],
@@ -30,10 +32,13 @@
     "@types/koa-qs": "~2.0.3",
     "@types/node": "^25.0.3",
     "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.12.0",
     "mongodb-memory-server": "^10.0.0",
+    "prettier": "^3.9.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.50.1",
-    "vitest": "^2.0.0"
+    "vitest": "^2.1.9"
   }
 }
