@@ -1,12 +1,12 @@
 import { type ZodRouter } from "koa-zod-router";
 import booksList from "./lists";
-import createOrUpdateBook from "./create";
+import createBookRoute from "./create_route";
 import deleteBook from "./delete";
-import lookupBookByIdRoute from "./lookup";
+import lookupBookByIdRoute from "../lookup_route";
 
 export function registerBookRoutes(router: ZodRouter): void {
   booksList(router);
-  createOrUpdateBook(router);
+  createBookRoute(router);
   deleteBook(router);
   lookupBookByIdRoute(router);
 }
