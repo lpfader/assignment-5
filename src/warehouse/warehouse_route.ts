@@ -19,7 +19,7 @@ export default function warehouseRoutes(router: ZodRouter): void {
       const { bookId } = ctx.request.params;
 
       const total = await warehouse.getTotalStock(bookId);
-      const byLocation = await warehouse.findBookOnShelf(bookId);
+      const byLocation = await warehouse.getStockByLocation(bookId);
 
       ctx.body = {
         bookId,
@@ -48,7 +48,7 @@ export default function warehouseRoutes(router: ZodRouter): void {
       const { bookId } = ctx.request.params;
       const { location } = ctx.request.body;
 
-      await warehouse.placeBooksOnShelf(bookId, 1, location);
+      await warehouse.addStock(bookId, location);
 
       ctx.body = { success: true };
 
@@ -73,7 +73,7 @@ export default function warehouseRoutes(router: ZodRouter): void {
       const { bookId } = ctx.request.params;
       const { location } = ctx.request.body;
 
-      await warehouse.removeBooksFromShelf(bookId, 1, location);
+      await warehouse.removeStock(bookId, location);
 
       ctx.body = { success: true };
 

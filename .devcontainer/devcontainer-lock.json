@@ -1,0 +1,9 @@
+{
+  "features": {
+    "ghcr.io/mcmastercce/bvd-103-mcmasterful-books/mcmasterful-books:latest": {
+      "version": "0.1.5",
+      "resolved": "ghcr.io/mcmastercce/bvd-103-mcmasterful-books/mcmasterful-books@sha256:a870b699f604ba56a8dac80d0501bec7063c70684ab74642201a59e0c8ed0a23",
+      "integrity": "sha256:a870b699f604ba56a8dac80d0501bec7063c70684ab74642201a59e0c8ed0a23"
+    }
+  }
+}
