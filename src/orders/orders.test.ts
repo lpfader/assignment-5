@@ -1,120 +1,72 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { InMemoryOrdersStorage } from "./memory-adapter";
+import { createWarehouseStorage } from "../../src/warehouse/warehouse";
+import { createOrdersStorage } from "../../src/orders/orders";
 
-describe("Orders Storage", () => {
-  let orders: InMemoryOrdersStorage;
+describe("OrdersStorage (Assignment 4)", () => {
+  let warehouse: ReturnType<typeof createWarehouseStorage>;
+  let orders: ReturnType<typeof createOrdersStorage>;
 
   beforeEach(() => {
-    orders = new InMemoryOrdersStorage();
+    warehouse = createWarehouseStorage();
+    orders = createOrdersStorage(warehouse);
   });
 
-  describe("createOrder", () => {
-    it("should create an order with a single book", async () => {
-      const result = await orders.createOrder(["book1"]);
+  it("places an order when enough stock exists", async () => {
+    await warehouse.addStock("book1", "A1");
+    await warehouse.addStock("book1", "A1");
+    await warehouse.addStock("book1", "B2");
 
-      expect(result.orderId).toBeDefined();
-      expect(typeof result.orderId).toBe("string");
-    });
+    const order = await orders.placeOrder("book1", 2);
 
-    it("should create an order with multiple books", async () => {
-      const result = await orders.createOrder(["book1", "book2", "book1"]);
+    expect(order.id).toBeDefined();
+    expect(order.bookId).toBe("book1");
+    expect(order.quantity).toBe(2);
+    expect(typeof order.createdAt).toBe("string");
 
-      const order = await orders.getOrder(result.orderId);
-      expect(order).not.toBeNull();
-      expect(order?.books).toEqual({ book1: 2, book2: 1 });
-    });
-
-    it("should reject empty order", async () => {
-      await expect(orders.createOrder([])).rejects.toThrow(
-        "Order must contain at least one book",
-      );
-    });
-
-    it("should set fulfilled to false initially", async () => {
-      const result = await orders.createOrder(["book1"]);
-      const order = await orders.getOrder(result.orderId);
-
-      expect(order?.fulfilled).toBe(false);
-    });
+    const remaining = await warehouse.getTotalStock("book1");
+    expect(remaining).toBe(1);
   });
 
-  describe("getOrder", () => {
-    it("should return null for unknown order", async () => {
-      const order = await orders.getOrder("unknown-id");
-      expect(order).toBeNull();
-    });
+  it("throws when not enough stock exists", async () => {
+    await warehouse.addStock("book1", "A1");
 
-    it("should return the order when found", async () => {
-      const { orderId } = await orders.createOrder(["book1", "book2"]);
-      const order = await orders.getOrder(orderId);
-
-      expect(order).not.toBeNull();
-      expect(order?.orderId).toBe(orderId);
-      expect(order?.books).toEqual({ book1: 1, book2: 1 });
-    });
+    await expect(orders.placeOrder("book1", 2)).rejects.toThrow(
+      "Not enough stock to fulfill order"
+    );
   });
 
-  describe("listOrders", () => {
-    it("should return empty array when no orders", async () => {
-      const allOrders = await orders.listOrders();
-      expect(allOrders).toEqual([]);
-    });
+  it("reduces stock from multiple locations", async () => {
+    await warehouse.addStock("book1", "A1"); // 1
+    await warehouse.addStock("book1", "A1"); // 2
+    await warehouse.addStock("book1", "B2"); // 3
 
-    it("should return all orders", async () => {
-      await orders.createOrder(["book1"]);
-      await orders.createOrder(["book2"]);
-      await orders.createOrder(["book3"]);
+    await orders.placeOrder("book1", 3);
 
-      const allOrders = await orders.listOrders();
-      expect(allOrders).toHaveLength(3);
-    });
+    const remaining = await warehouse.getTotalStock("book1");
+    expect(remaining).toBe(0);
 
-    it("should filter by fulfilled status", async () => {
-      const { orderId: order1 } = await orders.createOrder(["book1"]);
-      await orders.createOrder(["book2"]);
-      await orders.fulfillOrder(order1);
-
-      const pending = await orders.listOrders(false);
-      const fulfilled = await orders.listOrders(true);
-
-      expect(pending).toHaveLength(1);
-      expect(fulfilled).toHaveLength(1);
-    });
-
-    it("should order by creation time", async () => {
-      const { orderId: id1 } = await orders.createOrder(["book1"]);
-      const { orderId: id2 } = await orders.createOrder(["book2"]);
-      const { orderId: id3 } = await orders.createOrder(["book3"]);
-
-      const allOrders = await orders.listOrders();
-      expect(allOrders[0].orderId).toBe(id1);
-      expect(allOrders[1].orderId).toBe(id2);
-      expect(allOrders[2].orderId).toBe(id3);
-    });
+    const byLocation = await warehouse.getStockByLocation("book1");
+    expect(byLocation).toEqual({});
   });
 
-  describe("fulfillOrder", () => {
-    it("should mark order as fulfilled", async () => {
-      const { orderId } = await orders.createOrder(["book1"]);
-      await orders.fulfillOrder(orderId);
+  it("stores orders in memory", async () => {
+    await warehouse.addStock("book1", "A1");
+    await warehouse.addStock("book2", "A1");
 
-      const order = await orders.getOrder(orderId);
-      expect(order?.fulfilled).toBe(true);
-    });
+    await orders.placeOrder("book1", 1);
+    await orders.placeOrder("book2", 1);
 
-    it("should throw for unknown order", async () => {
-      await expect(orders.fulfillOrder("unknown")).rejects.toThrow(
-        "Order not found",
-      );
-    });
+    const allOrders = await orders.getOrders();
+    expect(allOrders).toHaveLength(2);
 
-    it("should throw if already fulfilled", async () => {
-      const { orderId } = await orders.createOrder(["book1"]);
-      await orders.fulfillOrder(orderId);
+    expect(allOrders[0].bookId).toBe("book1");
+    expect(allOrders[1].bookId).toBe("book2");
+  });
 
-      await expect(orders.fulfillOrder(orderId)).rejects.toThrow(
-        "Order already fulfilled",
-      );
-    });
+  it("orders include timestamps", async () => {
+    await warehouse.addStock("book1", "A1");
+
+    const order = await orders.placeOrder("book1", 1);
+    expect(typeof order.createdAt).toBe("string");
   });
 });
