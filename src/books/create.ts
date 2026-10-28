@@ -11,7 +11,7 @@ export interface CreateBookInput {
 
 export async function createBook(
   input: CreateBookInput,
-  database: BookDatabaseAccessor
+  database: BookDatabaseAccessor,
 ): Promise<{
   id: string;
   name: string;

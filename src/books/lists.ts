@@ -34,7 +34,7 @@ export default function booksList(router: ZodRouter): void {
         books.map(async (book) => ({
           ...book,
           stock: await warehouse.getTotalStock(book.id),
-        }))
+        })),
       );
 
       ctx.body = booksWithStock;

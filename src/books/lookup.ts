@@ -1,10 +1,9 @@
 import { ObjectId } from "mongodb";
 import type { BookDatabaseAccessor } from "../database_access";
-import type { BookDocument } from "./types";
 
 export async function lookupBookById(
   id: string,
-  database: BookDatabaseAccessor
+  database: BookDatabaseAccessor,
 ): Promise<{
   id: string;
   name: string;

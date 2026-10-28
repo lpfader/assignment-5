@@ -1,23 +1,18 @@
 import { MongoClient, type Db, type Collection } from "mongodb";
 import type { BookDocument } from "./books/types";
 
-
-const uri = (global as any).MONGO_URI ?? "mongodb://mongo";
-
-export const client = new MongoClient(uri);
-
 export interface BookDatabaseAccessor {
   database: Db;
   books: Collection<BookDocument>;
 }
 
 export function getBookDatabase(): BookDatabaseAccessor {
-  const databaseName =
-    (global as any).MONGO_URI !== undefined
-      ? Math.floor(Math.random() * 100000).toString()
-      : "books-database";
+  // Read MONGO_URI at call time, not import time
+  const client = new MongoClient(process.env.MONGO_URI!);
 
-  const database = client.db(databaseName);
+  // Use one consistent database name across the whole project
+  const database = client.db("mcmasterful-books");
+
   const books = database.collection<BookDocument>("books");
 
   return { database, books };

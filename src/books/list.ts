@@ -2,8 +2,10 @@ import type { BookDatabaseAccessor } from "../database_access";
 
 import type { BookDocument } from "./types";
 
-
-export async function listBooks(filters: any[], database: BookDatabaseAccessor) {
+export async function listBooks(
+  filters: any[],
+  database: BookDatabaseAccessor,
+) {
   const validFilters =
     filters?.filter(
       ({ from, to, name, author }) =>
@@ -40,12 +42,11 @@ export async function listBooks(filters: any[], database: BookDatabaseAccessor) 
   const documents = await database.books.find(query).toArray();
 
   return documents.map((document: BookDocument & { _id: any }) => ({
-  id: document._id.toHexString(),
-  name: document.name,
-  author: document.author,
-  description: document.description,
-  price: document.price,
-  image: document.image,
-}));
-
+    id: document._id.toHexString(),
+    name: document.name,
+    author: document.author,
+    description: document.description,
+    price: document.price,
+    image: document.image,
+  }));
 }
