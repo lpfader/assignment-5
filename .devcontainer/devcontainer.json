@@ -1,5 +1,5 @@
 {
-  "name": "Assignment-4",
+  "name": "Assignment-5",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "dockerComposeFile": ["docker-compose.yml"],
   "service": "dev",
