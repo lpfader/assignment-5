@@ -1,30 +1,24 @@
 import Koa from "koa";
 import cors from "@koa/cors";
-import zodRouter from "koa-zod-router";
 import qs from "koa-qs";
 import { connectToDatabase } from "./db";
-import { registerBookRoutes } from "./books/book_routes";
-import { registerWarehouseRoutes } from "./warehouse/routes";
-import { registerOrderRoutes } from "./orders/routes";
+import { RegisterRoutes } from "./routes/routes";   // ✅ TSOA-generated router
+import Router from "@koa/router";                   // ✅ Koa router class
 
 const app = new Koa();
-
-// We use koa-qs to enable parsing complex query strings, like our filters.
 qs(app);
-
-// And we add cors to ensure we can access our API from the mcmasterful-books website
 app.use(cors());
 
-const router = zodRouter();
+// Create a real Koa router (TSOA needs this)
+const router = new Router();
 
-// Register all routes
-registerBookRoutes(router);
-registerWarehouseRoutes(router);
-registerOrderRoutes(router);
+// Register all TSOA routes
+RegisterRoutes(router);   // ✅ This is the “extra line” you were asking about
 
+// Attach routes to the app
 app.use(router.routes());
+app.use(router.allowedMethods());
 
-// Connect to database and start server
 connectToDatabase()
   .then(() => {
     app.listen(3000, () => {
