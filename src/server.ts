@@ -1,3 +1,5 @@
+import { koaSwagger } from 'koa2-swagger-ui';
+import swagger from '../build/swagger.json';
 import Koa from "koa";
 import cors from "@koa/cors";
 import qs from "koa-qs";
@@ -18,6 +20,17 @@ RegisterRoutes(router);   // ✅ This is the “extra line” you were asking ab
 // Attach routes to the app
 app.use(router.routes());
 app.use(router.allowedMethods());
+
+app.use(
+  koaSwagger({
+    routePrefix: '/docs',
+    specPrefix: '/docs/spec',
+    exposeSpec: true,
+    swaggerOptions: {
+      spec: swagger
+    }
+  })
+);
 
 connectToDatabase()
   .then(() => {

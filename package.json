@@ -3,19 +3,19 @@
   "version": "1.0.0",
   "description": "This is an ongoing repository for BVD 103.",
   "main": "src/server.ts",
-"scripts": {
-  "start-server": "tsx ./src/server.ts",
-  "test": "vitest",
-  "test:ci": "vitest run",
-  "lint": "eslint . --cache",
-  "fix-lint": "eslint . --fix --cache",
-  "fmt": "prettier --write .",
-  "fmt-check": "prettier --check .",
-  "type-check": "tsc --noEmit",
-  "tsoa:spec": "tsoa spec",
-  "tsoa:routes": "tsoa routes",
-  "tsoa:build": "npm run tsoa:spec && npm run tsoa:routes"
-},
+  "scripts": {
+    "start-server": "tsx ./src/server.ts",
+    "test": "vitest",
+    "test:ci": "vitest run",
+    "lint": "eslint . --cache",
+    "fix-lint": "eslint . --fix --cache",
+    "fmt": "prettier --write .",
+    "fmt-check": "prettier --check .",
+    "type-check": "tsc --noEmit",
+    "tsoa:spec": "tsoa spec",
+    "tsoa:routes": "tsoa routes",
+    "tsoa:build": "npm run tsoa:spec && npm run tsoa:routes"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -30,7 +30,8 @@
     "mongodb": "^7.0.0",
     "swagger-ui-express": "^5.0.1",
     "tsoa": "^6.6.0",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "client-sdk": "file:./client-sdk"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
