@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Example,
   Get,
   Path,
   Post,
@@ -36,22 +37,23 @@ export interface BookResponse {
 
 /** The fields required to create or update a book. */
 export interface CreateBookRequest {
-  /**
-   * When supplied, the book with this ID is updated instead of a new one
-   * being created. Omit it to create a new book.
-   */
   id?: string;
-  /** Title of the book. */
   name: string;
-  /** Who wrote it. */
   author: string;
-  /** Short blurb shown on the storefront. */
   description: string;
-  /** Price in dollars. Must be zero or greater. */
   price: number;
-  /** URL of the cover image. */
   image: string;
 }
+
+const EXAMPLE_BOOK: BookResponse = {
+  id: "507f1f77bcf86cd799439011",
+  name: "The Lord of the Rings",
+  author: "J.R.R. Tolkien",
+  description: "Epic high-fantasy novel",
+  price: 24.99,
+  image: "https://example.com/lotr.jpg",
+  stock: 5,
+};
 
 function bookDatabase(): BookDatabaseAccessor {
   const database = getDatabase();
@@ -97,6 +99,7 @@ export class BooksController extends Controller {
    * @summary Get one book
    * @description Looks up a single book by its ID, including its current stock.
    */
+  @Example<BookResponse>(EXAMPLE_BOOK, "A book with five copies on the shelves")
   @Get("{bookId}")
   public async getBook(
     @Path() bookId: string,
@@ -117,7 +120,15 @@ export class BooksController extends Controller {
    * with that ID is updated instead, so this endpoint behaves as an upsert.
    * New books start with zero stock; use `POST /warehouse/shelves` to put
    * physical copies on a shelf.
+   * @example requestBody {
+   *   "name": "The Lord of the Rings",
+   *   "author": "J.R.R. Tolkien",
+   *   "description": "Epic high-fantasy novel",
+   *   "price": 24.99,
+   *   "image": "https://example.com/lotr.jpg"
+   * }
    */
+  @Example<BookResponse>(EXAMPLE_BOOK, "The book that was saved")
   @Post()
   @SuccessResponse("201", "Created")
   public async createBook(
