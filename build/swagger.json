@@ -292,13 +292,16 @@
 		"securitySchemes": {}
 	},
 	"info": {
-		"title": "assignment-template",
-		"version": "1.0.0",
-		"description": "This is an ongoing repository for BVD 103.",
+		"title": "Lewis' McMasterful Books API",
+		"version": "1.0.4",
+		"description": "Bookstore API for BVD 103 — Designed for browsing catalogue, tracking warehouse stock, and placing orders.",
 		"license": {
 			"name": "ISC"
 		},
-		"contact": {}
+		"contact": {
+			"name": "Lewis Fader",
+			"email": "lpfader@gmail.com"
+		}
 	},
 	"paths": {
 		"/hello/{name}": {
@@ -810,6 +813,20 @@
 	"servers": [
 		{
 			"url": "/"
+		}
+	],
+	"tags": [
+		{
+			"name": "Books",
+			"description": "Browse, add and remove books in the catalogue."
+		},
+		{
+			"name": "Warehouse",
+			"description": "Physical stock — which shelf holds how many copies."
+		},
+		{
+			"name": "Orders",
+			"description": "Place orders, inspect them, and mark them fulfilled."
 		}
 	]
 }
