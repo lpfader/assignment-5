@@ -1,6 +1,14 @@
 import {
-  Body, Controller, Get, Path, Post, Res, Route,
-  SuccessResponse, Tags, type TsoaResponse,
+  Body,
+  Controller,
+  Get,
+  Path,
+  Post,
+  Res,
+  Route,
+  SuccessResponse,
+  Tags,
+  type TsoaResponse,
 } from "tsoa";
 
 import type { ErrorResponse } from "../responses";
@@ -70,9 +78,7 @@ export class WarehouseController extends Controller {
    * copy of the book. Books with no stock return an empty list.
    */
   @Get("books/{bookId}/locations")
-  public async getBookLocations(
-    @Path() bookId: string,
-  ): Promise<ShelfStock[]> {
+  public async getBookLocations(@Path() bookId: string): Promise<ShelfStock[]> {
     return getWarehouseStorage().findBookOnShelf(bookId);
   }
 

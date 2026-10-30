@@ -1,6 +1,16 @@
 import {
-  Body, Controller, Delete, Get, Path, Post, Query, Res, Route,
-  SuccessResponse, Tags, type TsoaResponse,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Path,
+  Post,
+  Query,
+  Res,
+  Route,
+  SuccessResponse,
+  Tags,
+  type TsoaResponse,
 } from "tsoa";
 import { ObjectId } from "mongodb";
 
@@ -107,7 +117,10 @@ export class BooksController extends Controller {
     @Body() requestBody: CreateBookRequest,
     @Res() badRequest: TsoaResponse<400, ErrorResponse>,
   ): Promise<BookResponse> {
-    if (typeof requestBody.name !== "string" || requestBody.name.trim() === "") {
+    if (
+      typeof requestBody.name !== "string" ||
+      requestBody.name.trim() === ""
+    ) {
       return badRequest(400, { error: "name must not be empty" });
     }
 

@@ -8,11 +8,23 @@
     "name": "Lewis' McMasterful Books API",
     "version": "1.0.4",
     "description": "Bookstore API for BVD 103 — Designed for browsing catalogue, tracking warehouse stock, and placing orders.",
-    "contact": { "name": "Lewis Fader", "email": "faderl@avenue.cllmcmaster.ca" },
+    "contact": {
+      "name": "Lewis Fader",
+      "email": "faderl@avenue.cllmcmaster.ca"
+    },
     "tags": [
-      { "name": "Books", "description": "Browse, add and remove books in the catalogue." },
-      { "name": "Warehouse", "description": "Physical stock — which shelf holds how many copies." },
-      { "name": "Orders", "description": "Place orders, inspect them, and mark them fulfilled." }
+      {
+        "name": "Books",
+        "description": "Browse, add and remove books in the catalogue."
+      },
+      {
+        "name": "Warehouse",
+        "description": "Physical stock — which shelf holds how many copies."
+      },
+      {
+        "name": "Orders",
+        "description": "Place orders, inspect them, and mark them fulfilled."
+      }
     ]
   },
   "routes": {

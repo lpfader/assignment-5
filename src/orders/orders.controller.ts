@@ -1,6 +1,15 @@
 import {
-  Body, Controller, Get, Path, Post, Query, Res, Route,
-  SuccessResponse, Tags, type TsoaResponse,
+  Body,
+  Controller,
+  Get,
+  Path,
+  Post,
+  Query,
+  Res,
+  Route,
+  SuccessResponse,
+  Tags,
+  type TsoaResponse,
 } from "tsoa";
 import { ObjectId } from "mongodb";
 
@@ -96,7 +105,8 @@ export class OrdersController extends Controller {
   @SuccessResponse("201", "Created")
   public async createOrder(
     @Body() requestBody: CreateOrderRequest,
-    @Res() badRequest: TsoaResponse<400, ErrorResponse | InvalidBookIdsResponse>,
+    @Res()
+    badRequest: TsoaResponse<400, ErrorResponse | InvalidBookIdsResponse>,
   ): Promise<CreateOrderResponse> {
     const { books } = requestBody;
 
