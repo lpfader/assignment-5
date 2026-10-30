@@ -1,52 +1,47 @@
-import { koaSwagger } from 'koa2-swagger-ui';
-import swagger from '../build/swagger.json';
 import Koa from 'koa';
 import Router from '@koa/router';
 import cors from '@koa/cors';
 import qs from 'koa-qs';
+import bodyParser from 'koa-bodyparser';
+import { koaSwagger } from 'koa2-swagger-ui';
+import type { Server } from 'http';
+
+import swagger from '../build/swagger.json';
+import { RegisterRoutes } from '../build/routes';
 import { connectToDatabase } from './db';
 
-// TSOA routes — use import, NOT require
-import { RegisterRoutes } from '../build/routes';
+export interface RunningServer {
+  server: Server;
+  state: unknown;
+}
 
-const app = new Koa();
+export default async function server(port = 3000): Promise<RunningServer> {
+  const app = new Koa();
 
-import bodyParser from 'koa-bodyparser';
+  app.use(bodyParser());
+  qs(app);
+  app.use(cors());
 
-app.use(bodyParser());
+  const router = new Router();
+  RegisterRoutes(router);
+  app.use(router.routes());
+  app.use(router.allowedMethods());
 
-const router = new Router();
+  app.use(
+    koaSwagger({
+      routePrefix: '/docs',
+      specPrefix: '/docs/spec',
+      exposeSpec: true,
+      swaggerOptions: { spec: swagger },
+    }),
+  );
 
-qs(app);
-app.use(cors());
+  await connectToDatabase();
 
-// Register TSOA routes
-RegisterRoutes(router);
+  const instance = app.listen(port);
+  if (port > 0) {
+    console.log(`Server listening on port ${port}`);
+  }
 
-// Mount router
-app.use(router.routes());
-app.use(router.allowedMethods());
-
-// Swagger UI
-app.use(
-  koaSwagger({
-    routePrefix: '/docs',
-    specPrefix: '/docs/spec',
-    exposeSpec: true,
-    swaggerOptions: {
-      spec: swagger,
-    },
-  })
-);
-
-// Start DB + server
-connectToDatabase()
-  .then(() => {
-    app.listen(3000, () => {
-      console.log('Server listening on port 3000');
-    });
-  })
-  .catch((err) => {
-    console.error('Failed to connect to database:', err);
-    process.exit(1);
-  });
+  return { server: instance, state: {} };
+}
