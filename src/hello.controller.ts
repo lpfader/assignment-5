@@ -2,7 +2,7 @@ import { Route, Get, Path, Request } from 'tsoa';
 import type { ParameterizedContext } from 'koa';
 
 @Route('hello')
-export class HelloRoute {
+export class HelloController {
   @Get('{name}')
   public async sayHello(
     @Path() name: string,

@@ -1,13 +1,16 @@
 {
   "entryFile": "src/server.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
-  "controllerPathGlobs": ["src/**/*.route.ts"],
+  "controllerPathGlobs": ["src/**/*.controller.ts"],
   "spec": {
     "outputDirectory": "build",
     "specVersion": 3
   },
   "routes": {
     "routesDir": "build",
-    "middleware": "koa"
+    "middleware": "koa",
+    "compilerOptions": {
+      "outDir": "build"
+    }
   }
 }

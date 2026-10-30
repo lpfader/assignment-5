@@ -4,7 +4,7 @@
 import type { TsoaRoute } from '@tsoa/runtime';
 import { fetchMiddlewares, KoaTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { HelloRoute } from './../src/hello.route';
+import { HelloController } from './../src/hello.controller';
 import type { Context, Next, Middleware, Request as KRequest, Response as KResponse } from 'koa';
 import type * as KoaRouter from '@koa/router';
 
@@ -26,19 +26,19 @@ export function RegisterRoutes(router: KoaRouter) {
     // ###########################################################################################################
 
 
-        const argsHelloRoute_sayHello: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsHelloController_sayHello: Record<string, TsoaRoute.ParameterSchema> = {
                 name: {"in":"path","name":"name","required":true,"dataType":"string"},
                 request: {"in":"request","name":"request","required":true,"dataType":"object"},
         };
         router.get('/hello/:name',
-            ...(fetchMiddlewares<Middleware>(HelloRoute)),
-            ...(fetchMiddlewares<Middleware>(HelloRoute.prototype.sayHello)),
+            ...(fetchMiddlewares<Middleware>(HelloController)),
+            ...(fetchMiddlewares<Middleware>(HelloController.prototype.sayHello)),
 
-            async function HelloRoute_sayHello(context: Context, next: Next) {
+            async function HelloController_sayHello(context: Context, next: Next) {
 
             let validatedArgs: any[] = [];
             try {
-              validatedArgs = templateService.getValidatedArgs({ args: argsHelloRoute_sayHello, context, next });
+              validatedArgs = templateService.getValidatedArgs({ args: argsHelloController_sayHello, context, next });
             } catch (err) {
               const error = err as any;
               error.message ||= JSON.stringify({ fields: error.fields });
@@ -46,7 +46,7 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(context.status, error.message, error);
             }
 
-            const controller = new HelloRoute();
+            const controller = new HelloController();
 
             return templateService.apiHandler({
               methodName: 'sayHello',
