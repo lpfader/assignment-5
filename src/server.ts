@@ -10,6 +10,11 @@ import { connectToDatabase } from './db';
 import { RegisterRoutes } from '../build/routes';
 
 const app = new Koa();
+
+import bodyParser from 'koa-bodyparser';
+
+app.use(bodyParser());
+
 const router = new Router();
 
 qs(app);
