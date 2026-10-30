@@ -22,3 +22,4 @@ src/
   orders/               Orders: controller, storage port, in-memory adapter
 tests/                  API tests + test server harness
 adapter/                Client-facing adapter used by the course website
+```

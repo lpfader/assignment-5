@@ -254,8 +254,12 @@
 				"additionalProperties": false
 			},
 			"CreateBookRequest": {
-				"description": "The fields required to create a book.",
+				"description": "The fields required to create or update a book.",
 				"properties": {
+					"id": {
+						"type": "string",
+						"description": "When supplied, the book with this ID is updated instead of a new one\nbeing created. Omit it to create a new book."
+					},
 					"name": {
 						"type": "string",
 						"description": "Title of the book."
@@ -300,7 +304,7 @@
 		},
 		"contact": {
 			"name": "Lewis Fader",
-			"email": "lpfader@gmail.com"
+			"email": "faderl@avenue.cllmcmaster.ca"
 		}
 	},
 	"paths": {
@@ -716,7 +720,7 @@
 						}
 					}
 				},
-				"summary": "Add a book to the catalogue",
+				"summary": "Add or update a book",
 				"tags": [
 					"Books"
 				],

@@ -34,8 +34,13 @@ export interface BookResponse {
   stock: number;
 }
 
-/** The fields required to create a book. */
+/** The fields required to create or update a book. */
 export interface CreateBookRequest {
+  /**
+   * When supplied, the book with this ID is updated instead of a new one
+   * being created. Omit it to create a new book.
+   */
+  id?: string;
   /** Title of the book. */
   name: string;
   /** Who wrote it. */
@@ -107,9 +112,11 @@ export class BooksController extends Controller {
   }
 
   /**
-   * @summary Add a book to the catalogue
-   * @description Creates a new book. New books start with zero stock; use
-   * `POST /warehouse/shelves` to put physical copies on a shelf.
+   * @summary Add or update a book
+   * @description Creates a new book. If the body includes an `id`, the book
+   * with that ID is updated instead, so this endpoint behaves as an upsert.
+   * New books start with zero stock; use `POST /warehouse/shelves` to put
+   * physical copies on a shelf.
    */
   @Post()
   @SuccessResponse("201", "Created")
@@ -117,18 +124,38 @@ export class BooksController extends Controller {
     @Body() requestBody: CreateBookRequest,
     @Res() badRequest: TsoaResponse<400, ErrorResponse>,
   ): Promise<BookResponse> {
-    if (
-      typeof requestBody.name !== "string" ||
-      requestBody.name.trim() === ""
-    ) {
+    const { id, ...fields } = requestBody;
+
+    if (typeof fields.name !== "string" || fields.name.trim() === "") {
       return badRequest(400, { error: "name must not be empty" });
     }
 
-    if (!Number.isFinite(requestBody.price) || requestBody.price < 0) {
+    if (!Number.isFinite(fields.price) || fields.price < 0) {
       return badRequest(400, { error: "price must be zero or greater" });
     }
 
-    const created = await insertBook(requestBody, bookDatabase());
+    if (id !== undefined) {
+      let objectId: ObjectId;
+
+      try {
+        objectId = ObjectId.createFromHexString(id);
+      } catch {
+        return badRequest(400, { error: `id ${id} is not a valid book id` });
+      }
+
+      await getDatabase()
+        .collection("books")
+        .updateOne({ _id: objectId }, { $set: fields }, { upsert: true });
+
+      const updated = await lookupBookById(id, bookDatabase());
+      if (!updated) {
+        return badRequest(400, { error: `Book ${id} could not be saved` });
+      }
+
+      return withStock(updated);
+    }
+
+    const created = await insertBook(fields, bookDatabase());
     this.setStatus(201);
 
     return withStock(created);

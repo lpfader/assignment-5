@@ -149,6 +149,7 @@ const models: TsoaRoute.Models = {
     "CreateBookRequest": {
         "dataType": "refObject",
         "properties": {
+            "id": {"dataType":"string"},
             "name": {"dataType":"string","required":true},
             "author": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
@@ -174,7 +175,6 @@ export function RegisterRoutes(router: KoaRouter) {
 
         const argsHelloController_sayHello: Record<string, TsoaRoute.ParameterSchema> = {
                 name: {"in":"path","name":"name","required":true,"dataType":"string"},
-                request: {"in":"request","name":"request","required":true,"dataType":"object"},
         };
         router.get('/hello/:name',
             ...(fetchMiddlewares<Middleware>(HelloController)),
