@@ -1,8 +1,8 @@
-import { Route, Get, Path } from "tsoa";
+import { Route, Get, Path } from 'tsoa';
 
-@Route("hello")
+@Route('hello')
 export class HelloController {
-  @Get("{name}")
+  @Get('{name}')
   public async sayHello(@Path() name: string): Promise<string> {
     return `Hello ${name}`;
   }
