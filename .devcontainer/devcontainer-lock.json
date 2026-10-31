@@ -1,5 +1,10 @@
 {
   "features": {
+    "ghcr.io/devcontainers/features/java": {
+      "version": "1.8.3",
+      "resolved": "ghcr.io/devcontainers/features/java@sha256:61a839211feda1e2a1f10646648a948e733e4d98d770f3a4b6698a3c5fc92abe",
+      "integrity": "sha256:61a839211feda1e2a1f10646648a948e733e4d98d770f3a4b6698a3c5fc92abe"
+    },
     "ghcr.io/mcmastercce/bvd-103-mcmasterful-books/mcmasterful-books:latest": {
       "version": "0.1.5",
       "resolved": "ghcr.io/mcmastercce/bvd-103-mcmasterful-books/mcmasterful-books@sha256:a870b699f604ba56a8dac80d0501bec7063c70684ab74642201a59e0c8ed0a23",

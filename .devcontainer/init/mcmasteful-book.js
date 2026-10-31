@@ -61,4 +61,111 @@ db.books.insertMany([
     price: 91.99,
     image: "https://m.media-amazon.com/images/I/71Qde+ZerdL._SL1500_.jpg",
   },
+  {
+    name: "Carrie",
+    author: "Stephen King",
+    description:
+      "A bullied teenager discovers she has telekinetic powers, and her prom night goes very wrong.",
+    price: 11.99,
+    image:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1562580553l/51184262.jpg",
+  },
+  {
+    name: "The Shining",
+    author: "Stephen King",
+    description:
+      "A family winters alone in an isolated hotel that has a mind of its own.",
+    price: 14.99,
+    image: "https://example.com/images/the-shining.jpg",
+  },
+  {
+    name: "The Stand",
+    author: "Stephen King",
+    description:
+      "A plague wipes out most of humanity, and the survivors must choose a side.",
+    price: 18.99,
+    image: "https://m.media-amazon.com/images/I/91x78WWuiTL._SY466_.jpg",
+  },
+  {
+    name: "It",
+    author: "Stephen King",
+    description:
+      "Seven children in Derry face a shape-shifting evil that returns every twenty-seven years.",
+    price: 16.99,
+    image:
+      "https://thumbs.peoplesgdarchive.org/static/media-items/image/22856/upto-1440x4032/642cb809/1/IT3.jpg?tgt=webp",
+  },
+  {
+    name: "Misery",
+    author: "Stephen King",
+    description:
+      "A novelist is rescued from a car crash by his number one fan, who will not let him leave.",
+    price: 13.5,
+    image:
+      "https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781668094709/misery-9781668094709_lg.jpg",
+  },
+  {
+    name: "A Game of Thrones",
+    author: "George R.R. Martin",
+    description:
+      "Ned Stark is named Hand of the King, and the Seven Kingdoms begin to tear themselves apart.",
+    price: 12.99,
+    image: "https://i0.wp.com/ic.pics.livejournal.com/grrm/7059164/375508/375508_900.jpg",
+  },
+  {
+    name: "A Clash of Kings",
+    author: "George R.R. Martin",
+    description:
+      "Five kings claim the Iron Throne while a red comet burns over Westeros.",
+    price: 13.99,
+    image: "https://cdn.kobo.com/book-images/b17d1dea-b207-4ebe-b36b-da02a74d3289/353/569/90/False/a-clash-of-kings-a-song-of-ice-and-fire-book-two.webp",
+  },
+  {
+    name: "A Storm of Swords",
+    author: "George R.R. Martin",
+    description:
+      "The War of the Five Kings reaches its bloodiest turning point.",
+    price: 14.99,
+    image: "https://awoiaf.westeros.org/images/thumb/2/24/AStormOfSwords.jpg/200px-AStormOfSwords.jpg",
+  },
+  {
+    name: "A Feast for Crows",
+    author: "George R.R. Martin",
+    description:
+      "With the realm exhausted, the survivors scheme for power in the aftermath.",
+    price: 13.49,
+    image: "https://awoiaf.westeros.org/images/thumb/a/a3/AFeastForCrows.jpg/220px-AFeastForCrows.jpg",
+  },
+  {
+    name: "A Dance with Dragons",
+    author: "George R.R. Martin",
+    description:
+      "Daenerys rises in the east while the North faces what lies beyond the Wall.",
+    price: 15.99,
+    image: "https://georgerrmartin.com/gallery/art/dragons01.jpg",
+  },  
+  {
+    name: "Mastering Linux Premium Edition",
+    author: "Paul S. Wang",
+    description:
+      "A hands-on guide to the Linux command line, covering files, processes, networking and shell scripting.",
+    price: 49.99,
+    image: "https://m.media-amazon.com/images/I/71HP27TDS2L.gif",
+  },
+  {
+    name: "Indiana Jones and the Last Crusade",
+    author: "Rob MacGregor",
+    description:
+      "The novelization of the 1989 film: Indy races the Nazis to find the Holy Grail, with his father along for the ride.",
+    price: 9.99,
+    image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1388196967i/1548325.jpg",
+  },
+  {
+    name: "Macs For Dummies",
+    author: "David Pogue",
+    description:
+      "The 1992 beginner guide to the Macintosh, covering the desktop, files, printing and the rest of System 7.",
+    price: 19.99,
+    image: "https://images.craigslist.org/00U0U_jsECelEMut4_0lM0t2_600x450.jpg",
+  },
 ]);

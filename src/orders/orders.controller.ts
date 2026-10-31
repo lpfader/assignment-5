@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Example,
   Get,
   Path,
   Post,
@@ -55,6 +56,14 @@ export interface InvalidBookIdsResponse extends ErrorResponse {
   invalidIds: string[];
 }
 
+const EXAMPLE_ORDER: OrderResponse = {
+  orderId: "65f1a2b3c4d5e6f7a8b9c0d1",
+  books: { "507f1f77bcf86cd799439011": 2 },
+  fulfilled: false,
+};
+
+const EXAMPLE_FULFILLMENT: FulfillmentResponse = { success: true };
+
 /**
  * Returns the IDs that are either not valid ObjectIds or do not exist in the
  * books collection. One query instead of one per book.
@@ -100,7 +109,14 @@ export class OrdersController extends Controller {
    * @summary Place an order
    * @description Orders one or more books. Every ID must resolve to a book
    * that exists, otherwise the order is rejected and the bad IDs are listed.
+   * @example requestBody {
+   *   "books": ["507f1f77bcf86cd799439011", "507f1f77bcf86cd799439011"]
+   * }
    */
+  @Example<CreateOrderResponse>(
+    { orderId: "65f1a2b3c4d5e6f7a8b9c0d1" },
+    "The newly created order",
+  )
   @Post()
   @SuccessResponse("201", "Created")
   public async createOrder(
@@ -134,6 +150,7 @@ export class OrdersController extends Controller {
    * @description Returns orders oldest first. Pass `fulfilled` to see only
    * fulfilled (`true`) or only outstanding (`false`) orders.
    */
+  @Example<OrderResponse[]>([EXAMPLE_ORDER], "One outstanding order")
   @Get()
   public async listOrders(
     @Query() fulfilled?: boolean,
@@ -151,6 +168,7 @@ export class OrdersController extends Controller {
    * @summary Get one order
    * @description Fetches a single order by its ID.
    */
+  @Example<OrderResponse>(EXAMPLE_ORDER, "An order for two copies of one book")
   @Get("{orderId}")
   public async getOrder(
     @Path() orderId: string,
@@ -176,7 +194,17 @@ export class OrdersController extends Controller {
    * must belong to the order. Stock is removed as a unit: if any shelf cannot
    * supply its copies, everything already taken is put back and the order
    * stays unfulfilled.
+   * @example requestBody {
+   *   "fulfillment": [
+   *     {
+   *       "book": "507f1f77bcf86cd799439011",
+   *       "shelf": "A-1",
+   *       "numberOfBooks": 2
+   *     }
+   *   ]
+   * }
    */
+  @Example<FulfillmentResponse>(EXAMPLE_FULFILLMENT, "The order was fulfilled")
   @Post("{orderId}/fulfill")
   public async fulfillOrder(
     @Path() orderId: string,

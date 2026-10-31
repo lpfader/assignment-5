@@ -76,6 +76,10 @@ export class BooksController extends Controller {
    * and/or a name or author substring. Supplied filters are combined with AND.
    * Each book includes the total number of copies currently on shelves.
    */
+  @Example<BookResponse[]>(
+    [EXAMPLE_BOOK],
+    "This book has X copies in storage",
+  )
   @Get()
   public async listBooks(
     @Query() from?: number,
