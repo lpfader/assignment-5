@@ -47,11 +47,11 @@ export interface CreateBookRequest {
 
 const EXAMPLE_BOOK: BookResponse = {
   id: "507f1f77bcf86cd799439011",
-  name: "The Lord of the Rings",
+  name: "The Fellowship of the Ring",
   author: "J.R.R. Tolkien",
   description: "Epic high-fantasy novel",
   price: 24.99,
-  image: "https://example.com/lotr.jpg",
+  image: "https://covers.openlibrary.org/b/id/10654746-M.jpg",
   stock: 5,
 };
 
@@ -70,11 +70,15 @@ async function withStock(
 @Route("books")
 @Tags("Books")
 export class BooksController extends Controller {
-  /**
+    /**
    * @summary List the books in the catalogue
    * @description Returns every book, optionally narrowed by a price range
    * and/or a name or author substring. Supplied filters are combined with AND.
    * Each book includes the total number of copies currently on shelves.
+   * @param from Price: From
+   * @param to Price: To
+   * @param name Title contains
+   * @param author Author contains
    */
   @Example<BookResponse[]>(
     [EXAMPLE_BOOK],
